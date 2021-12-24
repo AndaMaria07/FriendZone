@@ -25,17 +25,24 @@ public class UserService implements Service<String, User> {
     }
 
     @Override
-    public void remove(User e) throws EntityNullException, NotExistenceException{
+    public void remove(User e) throws EntityNullException, NotExistenceException, ValidationException{
         this.userRepository.delete(e.getId());
     }
 
     @Override
-    public User findOne(String id) throws EntityNullException, NotExistenceException {
+    public User findOne(String id) throws EntityNullException, NotExistenceException, ValidationException {
         return userRepository.findOne(id);
     }
 
     @Override
     public void update(User newUser) throws EntityNullException, NotExistenceException, ValidationException{
         userRepository.update(newUser);
+    }
+
+    public User findOneByEmailAndPassword(String loggedEmail, String password) throws EntityNullException, NotExistenceException, ValidationException{
+        User foundUser = userRepository.findOne(loggedEmail);
+        if(foundUser.getPassword().equals(password))
+            return foundUser;
+        throw new NotExistenceException();
     }
 }

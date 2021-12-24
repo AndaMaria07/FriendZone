@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class UserMemoryRepository implements Repository<String, User> {
     private Validator<User> validator;
+    private Validator<String> emailValidator;
     private Map<String, User> entities;
 
     public UserMemoryRepository(Validator<User> validator) {
@@ -28,6 +29,7 @@ public class UserMemoryRepository implements Repository<String, User> {
     public User findOne(String id) {
         if (id == null)
             throw new IdNullException();
+        emailValidator.validate(id);
         for (User user : getAllEntities()) {
             if (user.getId().equals(id))
                 return entities.get(id);
