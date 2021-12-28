@@ -67,6 +67,7 @@ public class LogInController implements Initializable {
         registerStage.setTitle("Register");
         registerStage.setScene(registerScene);
         registerStage.initModality(Modality.APPLICATION_MODAL);
+        registerStage.initOwner(emailTextField.getScene().getWindow());
         registerStage.show();
     }
 
