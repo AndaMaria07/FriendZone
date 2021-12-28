@@ -4,16 +4,16 @@ import controller.Controller;
 import domain.*;
 import domain.validators.*;
 import domain.validators.exceptions.EntityNullException;
-import domain.validators.exceptions.LogInException;
-import domain.validators.exceptions.NotExistenceException;
-import javafx.fxml.FXML;
+import domain.validators.exceptions.ExistenceException;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import repository.Repository;
 import repository.db.FriendRequestDbRepository;
@@ -23,15 +23,17 @@ import repository.db.UserDbRepository;
 import service.*;
 import utils.UtilMethods;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LogInController implements Initializable {
-    Controller controller;
+public class RegisterController implements Initializable {
+    public TextField firstNameTextField;
+    public TextField lastNameTextField;
+    public TextField emailTextField;
+    public TextField passwordTextField;
+    public Button registerButton;
 
-    @FXML
-    private TextField emailTextField,passwordTextField;
+    private Controller controller;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -49,26 +51,15 @@ public class LogInController implements Initializable {
         controller = new Controller((UserService) userService,(FriendshipService) friendshipService,(MessageService) messageService,(FriendRequestService) friendRequestService);
     }
 
-    @FXML
-    public void onLogInButtonClick(){
+    public void onRegisterButtonClick() {
+        String email = emailTextField.getText();
+        String password = passwordTextField.getText();
+        String firstName = firstNameTextField.getText();
+        String lastName = lastNameTextField.getText();
         try {
-            controller.setLoggedEmail(emailTextField.getText());
-            controller.setLoggedPassword(passwordTextField.getText());
-        }catch (ValidationException | EntityNullException | LogInException | NotExistenceException exc){
+            controller.addUser(firstName, lastName, email, password);
+        } catch (EntityNullException | ValidationException | ExistenceException exc) {
             UtilMethods.showErrorDialog(exc.getMessage());
         }
     }
-
-    @FXML
-    public void onRegisterButtonClick() throws IOException {
-        FXMLLoader registerWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("register-view.fxml"));
-        Stage registerStage=new Stage();
-        Scene registerScene = new Scene(registerWindowLoader.load(), 500, 500);
-        registerStage.setTitle("Register");
-        registerStage.setScene(registerScene);
-        registerStage.initModality(Modality.APPLICATION_MODAL);
-        registerStage.show();
-    }
-
-
 }

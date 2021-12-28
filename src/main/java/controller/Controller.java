@@ -8,6 +8,8 @@ import service.FriendshipService;
 import service.MessageService;
 import service.UserService;
 import utils.Constants;
+import utils.UtilMethods;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
