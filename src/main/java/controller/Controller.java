@@ -315,4 +315,23 @@ public class Controller {
             throw new ExistenceException();
         friendRequestService.update(new FriendRequest("declined",friendRequest.getId()));
     }
+
+    /**
+     *
+     * @param firstName - the user's firstname
+     * @param lastName - the user's firstname
+     * @return the email of the user with the specified firstname and lastname
+     * @throws NotExistenceException if there is no user with the specified firstname and lastname
+     * @throws EntityNullException if the firstname or lastname is null
+     */
+    public String getUserEmail(String firstName,String lastName) throws NotExistenceException,EntityNullException{
+        if(firstName == null || lastName==null)
+            throw new EntityNullException();
+        Set<User> users= (Set<User>) getAllUsers();
+        for (User user:users) {
+            if(user.getFirstName().equals(firstName) && user.getLastName().equals(lastName))
+                return user.getEmail();
+        }
+        throw new NotExistenceException();
+    }
 }
