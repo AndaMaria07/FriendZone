@@ -2,15 +2,14 @@ package controller;
 
 import domain.*;
 import domain.validators.ValidationException;
-import domain.validators.exceptions.ExistenceException;
-import domain.validators.exceptions.LogInException;
-import domain.validators.exceptions.NotExistenceException;
-import domain.validators.exceptions.EntityNullException;
+import domain.validators.exceptions.*;
 import service.FriendRequestService;
 import service.FriendshipService;
 import service.MessageService;
 import service.UserService;
 import utils.Constants;
+import utils.UtilMethods;
+
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,18 +17,22 @@ import java.util.stream.Collectors;
 import static utils.Constants.DATE_TIME_FORMATTER;
 
 public class Controller {
+    private PasswordValidator passwordValidator;
     private UserService userService;
     private FriendshipService friendshipService;
     private MessageService messageService;
     private FriendRequestService friendRequestService;
     private String loggedId;
+    private String loggedPassword;
 
     public Controller(UserService userService, FriendshipService friendshipService, MessageService messageService, FriendRequestService friendRequestService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
         this.messageService = messageService;
         this.friendRequestService=friendRequestService;
+        passwordValidator=new PasswordValidator();
         loggedId="";
+        loggedPassword="";
     }
 
     /**
@@ -44,13 +47,36 @@ public class Controller {
 
     /**
      * @param id the id of the user
-     * Sets the value of the logged id to userId
+     * Sets the value of the logged id to id
      * @throws NotExistenceException if there is no user with the specified id
      * @throws EntityNullException if the id is null
      */
-    public void setLoggedEmail(String id) throws EntityNullException, NotExistenceException {
+    public void setLoggedEmail(String id) throws EntityNullException, NotExistenceException, ValidationException {
         userService.findOne(id);
         loggedId=id;
+    }
+
+    /**
+     * @param password the password of the user
+     * Sets the value of the logged password to password
+     * @throws NotExistenceException if there is no user with the specified password
+     * @throws EntityNullException if the password is null
+     * @throws LogInException if no user is logged
+     */
+    public void setLoggedPassword(String password) throws EntityNullException, NotExistenceException, LogInException, ValidationException {
+        passwordValidator.validate(password);
+        String loggedEmail=getLoggedEmail();
+        userService.findOneByEmailAndPassword(loggedEmail,password);
+        loggedPassword=password;
+    }
+
+    /**
+     * @return the password of the logged user
+     * @throws LogInException if no user is logged
+     */
+    public String getLoggedPassword() throws LogInException{
+        getLoggedEmail();
+        return loggedPassword;
     }
 
     public int numberOfCommunities(){
