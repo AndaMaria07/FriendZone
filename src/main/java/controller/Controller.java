@@ -169,7 +169,7 @@ public class Controller {
         boolean ok = true;
         for(User user : usersList){
             for(Friendship friendship: friendships){
-                if((friendship.getUserEmails().getRight().equals(user.getId()) && friendship.getUserEmails().getLeft().equals(loggedUser.getId())) || friendship.getUserEmails().getRight().equals(user.getId()) && friendship.getUserEmails().getLeft().equals(loggedUser.getId())) {
+                if((friendship.getUserEmails().getRight().equals(user.getEmail()) && friendship.getUserEmails().getLeft().equals(loggedUser.getEmail())) || friendship.getUserEmails().getRight().equals(loggedUser.getEmail()) && friendship.getUserEmails().getLeft().equals(user.getEmail())) {
                     ok = false;
                     break;
                 }
@@ -209,20 +209,32 @@ public class Controller {
         this.messageService.add(reply);
     }
 
-    public List<Message> viewConversation(String email1, String email2){
-        User user1 = userService.findOne(email1);
-        User user2 = userService.findOne(email2);
+    public void replyAll(Long id, String messageReply){
 
-        Iterable<Friendship> friendships = friendshipService.getAll();
-        boolean ok = true;
-        for(Friendship friendship: friendships){
-            if((friendship.getUserEmails().getRight().equals(user1.getId()) && friendship.getUserEmails().getLeft().equals(user2.getId())) || friendship.getUserEmails().getRight().equals(user2.getId()) && friendship.getUserEmails().getLeft().equals(user1.getId())) {
-                ok = false;
+        Message reply = null;
+        if(id > messageService.size()+1){
+            throw new ValidationException("This message doesn't exist!");
+        }
+
+        List<User> usersToReply = new ArrayList<>();
+
+        Iterable<Message> messageList = (Iterable<Message>) messageService.getAll();
+        for(Message message1 : messageList){
+            if(message1.getId().equals(id)){
+                for(User user : message1.getTo())
+                    if(!getLoggedEmail().equals(user.getEmail()))
+                        usersToReply.add(user);
+                usersToReply.add(message1.getFrom());
+                reply = new Message(messageService.size()+1,userService.findOne(getLoggedEmail()), usersToReply,messageReply,message1, LocalDateTime.now().format(DATE_TIME_FORMATTER));
                 break;
             }
         }
-        if(ok)
-            throw new ValidationException("Users are not friends!");
+        this.messageService.add(reply);
+    }
+
+    public List<Message> viewConversation(String email1, String email2){
+        User user1 = userService.findOne(email1);
+        User user2 = userService.findOne(email2);
 
         Iterable<Message> messageList = (Iterable<Message>) messageService.getAll();
         List<Message> conversation = new ArrayList<>();
