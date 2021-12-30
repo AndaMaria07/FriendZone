@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class FriendsController implements Initializable {
+public class FriendsController implements Initializable,FriendRequestListener {
     public TableView<UserModel> friendsTable;
     public TableColumn<UserModel,String> friendEmailColumn;
     public TableColumn<UserModel,String> friendFirstNameColumn;
@@ -29,7 +29,6 @@ public class FriendsController implements Initializable {
     public Button addFriendsButton;
     public Button friendRequestsButton;
     private ObservableList<UserModel> friendsModels;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,6 +57,12 @@ public class FriendsController implements Initializable {
         friendRequestsStage.setScene(friendRequestsScene);
         friendRequestsStage.initModality(Modality.APPLICATION_MODAL);
         friendRequestsStage.show();
+        ((FriendRequestController)friendRequestsWindowLoader.getController()).addListener(this);
+    }
+
+    @Override
+    public void onFriendRequestAccepted(Friendship friendship) {
+        friendsTable.setItems(getTableData());
     }
 }
 

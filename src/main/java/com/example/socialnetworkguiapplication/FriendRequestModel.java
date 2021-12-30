@@ -1,11 +1,11 @@
-package domain;
+package com.example.socialnetworkguiapplication;
 
-public class FriendRequestDto {
+public class FriendRequestModel {
     private String fromUserEmail;
     private String status;
     private String date;
 
-    public FriendRequestDto(String fromUserEmail, String status, String date) {
+    public FriendRequestModel(String fromUserEmail, String status, String date) {
         this.fromUserEmail = fromUserEmail;
         this.status = status;
         this.date = date;

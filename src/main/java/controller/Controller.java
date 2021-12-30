@@ -1,5 +1,6 @@
 package controller;
 
+import com.example.socialnetworkguiapplication.FriendRequestModel;
 import domain.*;
 import domain.validators.ValidationException;
 import domain.validators.exceptions.*;
@@ -7,8 +8,6 @@ import service.FriendRequestService;
 import service.FriendshipService;
 import service.MessageService;
 import service.UserService;
-import utils.Constants;
-import utils.UtilMethods;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -162,6 +161,17 @@ public class Controller {
         return userService.findOne(email);
     }
 
+    public List<FriendRequestModel> getRecievedRequests() throws LogInException{
+        List<FriendRequestModel> friendRequests=new ArrayList<>();
+        Set<User> usersWhoSentRequests= (Set<User>) getUsersWhoSentRequests();
+        for (User user:usersWhoSentRequests) {
+            FriendRequest request=friendRequestService.findOne(new Tuple<>(user.getEmail(),getLoggedEmail()));
+            FriendRequestModel requestDto=new FriendRequestModel(user.getEmail(),request.getStatus(),request.getDate());
+            friendRequests.add(requestDto);
+        }
+        return friendRequests;
+    }
+
     public List<UserDto> friendshipsByMonth(String email, String month) throws EntityNullException,ValidationException,NotExistenceException{
 
         User user = this.getUser(email);
@@ -282,7 +292,7 @@ public class Controller {
             friendshipService.findOne(new Tuple<>(loggedEmail,email));
             throw new ExistenceException();
         }catch (NotExistenceException exc){
-            friendRequestService.add(new FriendRequest("pending",new Tuple<>(loggedEmail,email)));
+            friendRequestService.add(new FriendRequest("pending",new Tuple<>(loggedEmail,email),LocalDateTime.now().format(DATE_TIME_FORMATTER)));
         }
     }
 
@@ -301,10 +311,11 @@ public class Controller {
         String loggedEmail=getLoggedEmail();
         userService.findOne(userEmail);
         FriendRequest friendRequest=friendRequestService.findOne(new Tuple<>(userEmail,loggedEmail));
+        friendRequest.addListener(friendshipService);
         if(!friendRequest.getStatus().equals("pending"))
             throw new ExistenceException();
-        friendRequestService.update(new FriendRequest("approved",friendRequest.getId()));
-        friendshipService.add(new Friendship(friendRequest.getId(),LocalDateTime.now().format(DATE_TIME_FORMATTER)));
+        friendRequest.setStatus("approved");
+        friendRequestService.update(friendRequest);
     }
 
     public void declineRequest(String userEmail) throws LogInException,EntityNullException,NotExistenceException{
@@ -313,7 +324,8 @@ public class Controller {
         FriendRequest friendRequest=friendRequestService.findOne(new Tuple<>(userEmail,loggedEmail));
         if(!friendRequest.getStatus().equals("pending"))
             throw new ExistenceException();
-        friendRequestService.update(new FriendRequest("declined",friendRequest.getId()));
+        friendRequest.setStatus("declined");
+        friendRequestService.update(friendRequest);
     }
 
     /**
