@@ -140,6 +140,24 @@ public class Controller {
         return friends;
     }
 
+    public List<User> getFriendsOfUser(User user){
+        List<User> friends = new ArrayList<>();
+        Set<Friendship> friendships = (Set<Friendship>)friendshipService.getAll();
+        friendships.stream()
+                .filter(x->x.getUserEmails().getLeft().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getRight());
+                    friends.add(friend);
+                });
+        friendships.stream()
+                .filter(x->x.getUserEmails().getRight().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getLeft());
+                    friends.add(friend);
+                });
+        return friends;
+    }
+
     public void updateUser(String email, String newF, String newL) throws EntityNullException,ValidationException,NotExistenceException{
         User user = userService.findOne(email);
         user.setFirstName(newF);

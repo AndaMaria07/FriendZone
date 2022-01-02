@@ -2,47 +2,90 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="624.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.FriendsController">
-   <children>
-      <TableView fx:id="friendsTable" layoutX="23.0" layoutY="77.0" prefHeight="200.0" prefWidth="578.0">
-        <columns>
-          <TableColumn fx:id="friendEmailColumn" minWidth="20.0" prefWidth="200.0" text="Email" />
-          <TableColumn fx:id="friendFirstNameColumn" prefWidth="125.0" text="Firstname" />
-            <TableColumn fx:id="friendLastNameColumn" prefWidth="125.0" text="Lastname" />
-            <TableColumn fx:id="friendshipDateColumn" prefWidth="125.0" text="Friends since" />
-        </columns>
-      </TableView>
-      <Slider layoutX="594.0" layoutY="77.0" orientation="VERTICAL" prefHeight="200.0" prefWidth="14.0" />
-      <Label layoutX="42.0" layoutY="25.0" text="Here are your friends">
-         <font>
-            <Font name="Corbel" size="28.0" />
-         </font>
-      </Label>
-      <Button fx:id="addFriendsButton" layoutX="149.0" layoutY="334.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="118.0" text="Add Friends">
-         <font>
-            <Font name="Corbel" size="18.0" />
-         </font>
-      </Button>
-      <Label layoutX="42.0" layoutY="293.0" text="Want more people in your Friendzone? Click Add Friends.">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="584.0" prefWidth="661.0" style="-fx-background-color: #EEE5EE; -fx-background-radius: 18 18 18 18; -fx-border-radius: 18 18 18 18;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.FriendsController">
+    <children>
+        <TableView fx:id="friendsTable" layoutX="27.0" layoutY="78.0" prefHeight="199.0" prefWidth="607.0" style="-fx-background-color: #A2C8A2; -fx-background-radius: 18 18 18 18; -fx-border-radius: 18 18 18 18;">
+            <columns>
+                <TableColumn fx:id="friendEmailColumn" minWidth="20.0" prefWidth="156.00002479553223" text="Email" />
+                <TableColumn fx:id="friendFirstNameColumn" prefWidth="144.7999267578125" text="Firstname" />
+                <TableColumn fx:id="friendLastNameColumn" prefWidth="144.0" text="Lastname" />
+                <TableColumn fx:id="friendshipDateColumn" prefWidth="132.80007934570312" text="Friends since" />
+            </columns>
+        </TableView>
+        <Label layoutX="55.0" layoutY="10.0" text="Here are your friends">
+            <font>
+                <Font name="Comic Sans MS" size="22.0" />
+            </font>
+        </Label>
+        <Button fx:id="addFriendsButton" layoutX="424.0" layoutY="301.0" mnemonicParsing="false" onAction="#onAddFriendsButtonClick" prefHeight="35.0" prefWidth="150.0" text="Add Friends">
+            <font>
+                <Font name="Corbel" size="18.0" />
+            </font>
+        </Button>
+        <Label layoutX="28.0" layoutY="287.0" prefHeight="49.0" prefWidth="409.0" text="Want more people in your Friendzone? ">
+            <font>
+                <Font name="Corbel Light" size="18.0" />
+            </font>
+        </Label>
+        <Button fx:id="friendRequestsButton" layoutX="424.0" layoutY="388.0" mnemonicParsing="false" onAction="#onFriendRequestsButtonClick" prefHeight="35.0" prefWidth="150.0" text="Friend Requests">
+            <font>
+                <Font name="Corbel" size="18.0" />
+            </font>
+        </Button>
+        <Label layoutX="28.0" layoutY="373.0" text="Are you curious who wants to be in your Friendzone? ">
+            <font>
+                <Font name="Corbel Light" size="18.0" />
+            </font>
+        </Label>
+      <Label layoutX="28.0" layoutY="446.0" prefHeight="34.0" prefWidth="270.0" text="Are you angry on your friend? ">
          <font>
             <Font name="Corbel Light" size="18.0" />
          </font>
       </Label>
-      <Button fx:id="friendRequestsButton" layoutX="133.0" layoutY="417.0" mnemonicParsing="false" onAction="#onFriendRequestsButtonClick" prefHeight="35.0" prefWidth="150.0" text="Friend Requests">
+      <Button layoutX="424.0" layoutY="471.0" mnemonicParsing="false" onAction="#removeFriendOnClicked" prefHeight="34.0" prefWidth="150.0" text="Remove Friend">
          <font>
             <Font name="Corbel" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="30.0" layoutY="386.0" text="Are you curious who wants to be in your Friendzone? Click Friend Requests.">
+      <TextField fx:id="searchBar" layoutX="376.0" layoutY="28.0" prefHeight="26.0" prefWidth="188.0" />
+      <ImageView fitHeight="81.0" fitWidth="49.0" layoutX="572.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/find_user_male_100px.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="90.0" layoutY="312.0" prefHeight="50.0" prefWidth="277.0" text="Click Add Friends.">
          <font>
             <Font name="Corbel Light" size="18.0" />
          </font>
       </Label>
-   </children>
+      <Label layoutX="85.0" layoutY="395.0" text="Click Friend Requests.">
+         <font>
+            <Font name="Corbel Light" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="90.0" layoutY="472.0" prefHeight="34.0" prefWidth="250.0" text=" Click remove Friend.">
+         <font>
+            <Font name="Corbel Light" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="49.0" fitWidth="49.0" layoutX="14.0" layoutY="519.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/icons8_Logout_100px.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="69.0" layoutY="530.0" mnemonicParsing="false" onAction="#logOutOnClicked" prefHeight="26.0" prefWidth="88.0" text="LogOut" />
+      <Label fx:id="loggedEmail" layoutX="78.0" layoutY="41.0" prefHeight="26.0" prefWidth="157.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+    </children>
 </AnchorPane>
