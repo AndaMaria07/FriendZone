@@ -1,5 +1,6 @@
 package controller;
 
+import com.example.socialnetworkguiapplication.FriendRequestModel;
 import domain.*;
 import domain.validators.ValidationException;
 import domain.validators.exceptions.*;
@@ -7,8 +8,6 @@ import service.FriendRequestService;
 import service.FriendshipService;
 import service.MessageService;
 import service.UserService;
-import utils.Constants;
-import utils.UtilMethods;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -141,6 +140,24 @@ public class Controller {
         return friends;
     }
 
+    public List<User> getFriendsOfUser(User user){
+        List<User> friends = new ArrayList<>();
+        Set<Friendship> friendships = (Set<Friendship>)friendshipService.getAll();
+        friendships.stream()
+                .filter(x->x.getUserEmails().getLeft().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getRight());
+                    friends.add(friend);
+                });
+        friendships.stream()
+                .filter(x->x.getUserEmails().getRight().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getLeft());
+                    friends.add(friend);
+                });
+        return friends;
+    }
+
     public void updateUser(String email, String newF, String newL) throws EntityNullException,ValidationException,NotExistenceException{
         User user = userService.findOne(email);
         user.setFirstName(newF);
@@ -160,6 +177,17 @@ public class Controller {
         if(!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))
             throw new ValidationException("Invalid email!\n");
         return userService.findOne(email);
+    }
+
+    public List<FriendRequestModel> getRecievedRequests() throws LogInException{
+        List<FriendRequestModel> friendRequests=new ArrayList<>();
+        Set<User> usersWhoSentRequests= (Set<User>) getUsersWhoSentRequests();
+        for (User user:usersWhoSentRequests) {
+            FriendRequest request=friendRequestService.findOne(new Tuple<>(user.getEmail(),getLoggedEmail()));
+            FriendRequestModel requestDto=new FriendRequestModel(user.getEmail(),request.getStatus(),request.getDate());
+            friendRequests.add(requestDto);
+        }
+        return friendRequests;
     }
 
     public List<UserDto> friendshipsByMonth(String email, String month) throws EntityNullException,ValidationException,NotExistenceException{
@@ -282,7 +310,7 @@ public class Controller {
             friendshipService.findOne(new Tuple<>(loggedEmail,email));
             throw new ExistenceException();
         }catch (NotExistenceException exc){
-            friendRequestService.add(new FriendRequest("pending",new Tuple<>(loggedEmail,email)));
+            friendRequestService.add(new FriendRequest("pending",new Tuple<>(loggedEmail,email),LocalDateTime.now().format(DATE_TIME_FORMATTER)));
         }
     }
 
@@ -301,10 +329,11 @@ public class Controller {
         String loggedEmail=getLoggedEmail();
         userService.findOne(userEmail);
         FriendRequest friendRequest=friendRequestService.findOne(new Tuple<>(userEmail,loggedEmail));
+        friendRequest.addListener(friendshipService);
         if(!friendRequest.getStatus().equals("pending"))
             throw new ExistenceException();
-        friendRequestService.update(new FriendRequest("approved",friendRequest.getId()));
-        friendshipService.add(new Friendship(friendRequest.getId(),LocalDateTime.now().format(DATE_TIME_FORMATTER)));
+        friendRequest.setStatus("approved");
+        friendRequestService.update(friendRequest);
     }
 
     public void declineRequest(String userEmail) throws LogInException,EntityNullException,NotExistenceException{
@@ -313,6 +342,26 @@ public class Controller {
         FriendRequest friendRequest=friendRequestService.findOne(new Tuple<>(userEmail,loggedEmail));
         if(!friendRequest.getStatus().equals("pending"))
             throw new ExistenceException();
-        friendRequestService.update(new FriendRequest("declined",friendRequest.getId()));
+        friendRequest.setStatus("declined");
+        friendRequestService.update(friendRequest);
+    }
+
+    /**
+     *
+     * @param firstName - the user's firstname
+     * @param lastName - the user's firstname
+     * @return the email of the user with the specified firstname and lastname
+     * @throws NotExistenceException if there is no user with the specified firstname and lastname
+     * @throws EntityNullException if the firstname or lastname is null
+     */
+    public String getUserEmail(String firstName,String lastName) throws NotExistenceException,EntityNullException{
+        if(firstName == null || lastName==null)
+            throw new EntityNullException();
+        Set<User> users= (Set<User>) getAllUsers();
+        for (User user:users) {
+            if(user.getFirstName().equals(firstName) && user.getLastName().equals(lastName))
+                return user.getEmail();
+        }
+        throw new NotExistenceException();
     }
 }
