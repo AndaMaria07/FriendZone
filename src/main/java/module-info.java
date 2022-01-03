@@ -7,6 +7,11 @@ module com.example.socialnetworkguiapplication {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
 
-    opens com.example.socialnetworkguiapplication to javafx.fxml;
-    exports com.example.socialnetworkguiapplication;
+    opens com.example.socialnetworkguiapplication to javafx.fxml, javafx.base,javafx.graphics;
+    exports com.example.socialnetworkguiapplication to javafx.base,javafx.graphics,javafx.fxml;
+
+    opens domain;
+    opens repository;
+    opens service;
+
 }

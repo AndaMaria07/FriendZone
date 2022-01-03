@@ -2,43 +2,55 @@ package com.example.socialnetworkguiapplication;
 
 import controller.Controller;
 import domain.*;
-import domain.validators.exceptions.ExistenceException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class FriendsController implements Initializable {
-
+public class FriendsController implements Initializable,FriendRequestListener {
     public TableView<UserModel> friendsTable;
     public TableColumn<UserModel,String> friendEmailColumn;
     public TableColumn<UserModel,String> friendFirstNameColumn;
     public TableColumn<UserModel,String> friendLastNameColumn;
     public TableColumn<UserModel,String> friendshipDateColumn;
+    public Button addFriendsButton;
     public Button friendRequestsButton;
     private ObservableList<UserModel> friendsModels;
+
+    @FXML
+    private TextField searchBar;
+
+    @FXML
+    private Label loggedEmail;
 
     Controller controller;
     private Stage primaryStage;
 
+    double xOffset = 0;
+    double yOffset = 0;
+
     public void setController(Controller controller) {
         this.controller = controller;
+        loggedEmail.setText(controller.getUser(controller.getLoggedEmail()).getFirstName().concat(" ").concat(controller.getUser(controller.getLoggedEmail()).getLastName()));
+
     }
 
     public void setStage(Stage stage) {
@@ -52,6 +64,7 @@ public class FriendsController implements Initializable {
         friendLastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         friendshipDateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
         friendsTable.setItems(getTableData());
+        searchBar.textProperty().addListener(o->handleSearch());
     }
 
     public ObservableList<UserModel> getTableData(){
@@ -64,7 +77,6 @@ public class FriendsController implements Initializable {
         return friendsModels;
     }
 
-    @FXML
     public void onFriendRequestsButtonClick() throws IOException {
         FXMLLoader friendRequestsWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("friend-requests-view.fxml"));
         Stage friendRequestsStage=new Stage();
@@ -73,6 +85,12 @@ public class FriendsController implements Initializable {
         friendRequestsStage.setScene(friendRequestsScene);
         friendRequestsStage.initModality(Modality.APPLICATION_MODAL);
         friendRequestsStage.show();
+        ((FriendRequestController)friendRequestsWindowLoader.getController()).addListener(this);
+    }
+
+    @Override
+    public void onFriendRequestAccepted(Friendship friendship) {
+        friendsTable.setItems(getTableData());
     }
 
     @FXML
@@ -98,7 +116,38 @@ public class FriendsController implements Initializable {
             MessageAlert.showErrorMessage(null,"Please select an user!");
         }
     }
+
+
+    void handleSearch(){
+        Predicate<UserModel> p1 = n->n.getFirstName().contains(searchBar.getText());
+        Predicate<UserModel> p2 = n->n.getLastName().contains(searchBar.getText());
+        List<UserModel> userModelList = this.getTableData().stream().filter(p1.or(p2)).collect(Collectors.toList());
+        friendsModels.setAll(userModelList);
+        friendsTable.setItems(friendsModels);
+    }
+
+    @FXML
+    void logOutOnClicked(ActionEvent event) throws IOException {
+        FXMLLoader logOutWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
+        Scene logInScene = new Scene(logOutWindowLoader.load(), 612,341);
+        logInScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        logInScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
+            }
+        });
+        primaryStage.setTitle("LogIn");
+        primaryStage.setScene(logInScene);
+        LogInController logInController = logOutWindowLoader.getController();
+        logInController.setController(controller);
+        logInController.setStage(primaryStage);
+    }
 }
-
-
-

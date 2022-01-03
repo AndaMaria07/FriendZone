@@ -1,26 +1,22 @@
 package com.example.socialnetworkguiapplication;
 
 import controller.Controller;
-import domain.*;
 import domain.validators.*;
 import domain.validators.exceptions.EntityNullException;
 import domain.validators.exceptions.LogInException;
 import domain.validators.exceptions.NotExistenceException;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import repository.Repository;
-import repository.db.FriendRequestDbRepository;
-import repository.db.FriendshipDbRepository;
-import repository.db.MessageDbRepository;
-import repository.db.UserDbRepository;
-import service.*;
+import javafx.stage.StageStyle;
 import utils.UtilMethods;
 
 import java.io.IOException;
@@ -28,32 +24,57 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LogInController implements Initializable {
-    Controller controller;
+    public Button logInButton;
+    public Button registerButton;
+    public TextField emailTextField,passwordTextField;
 
-    @FXML
-    private TextField emailTextField,passwordTextField;
+    Controller controller;
+    private Stage primaryStage;
+
+    double xOffset = 0;
+    double yOffset = 0;
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+    public void setStage(Stage stage) {
+        this.primaryStage = stage;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Validator<User> userValidator = new UserValidator();
-        Validator<String> emailValidator = new EmailValidator();
-        Validator<Friendship> friendshipValidator = new FriendshipValidator();
-        Repository<String, User> userDbRepository=new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana", userValidator,emailValidator);
-        Repository<Tuple<String, String>, Friendship> friendshipDbRepository =new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana",friendshipValidator);
-        Repository<Long, Message> messageDbRepository = new MessageDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana");
-        Repository<Tuple<String, String>, FriendRequest> friendRequestDbRepository=new FriendRequestDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana");
-        Service<String, User> userService = new UserService(userDbRepository);
-        Service<Tuple<String, String>, Friendship> friendshipService = new FriendshipService(friendshipDbRepository);
-        Service<Long,Message> messageService = new MessageService(messageDbRepository);
-        Service<Tuple<String, String>, FriendRequest> friendRequestService=new FriendRequestService(friendRequestDbRepository);
-        controller = new Controller((UserService) userService,(FriendshipService) friendshipService,(MessageService) messageService,(FriendRequestService) friendRequestService);
+
     }
 
     @FXML
-    public void onLogInButtonClick(){
+    public void onLogInButtonClick() throws IOException {
         try {
-            controller.setLoggedEmail(emailTextField.getText());
-            controller.setLoggedPassword(passwordTextField.getText());
+            String email=emailTextField.getText();
+            SocialNetworkApplication.getController().setLoggedEmail(email);
+            SocialNetworkApplication.getController().setLoggedPassword(passwordTextField.getText());
+            FXMLLoader friendsWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
+            Scene friendsScene=new Scene(friendsWindowLoader.load(),661,584);
+            friendsScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    xOffset = event.getSceneX();
+                    yOffset = event.getSceneY();
+                }
+            });
+            friendsScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    primaryStage.setX(event.getScreenX() - xOffset);
+                    primaryStage.setY(event.getScreenY() - yOffset);
+                }
+            });
+            primaryStage.setTitle("FriendZone");
+            primaryStage.setScene(friendsScene);
+            FriendsController friendsController = friendsWindowLoader.getController();
+            friendsController.setController(controller);
+            friendsController.setStage(primaryStage);
+
         }catch (ValidationException | EntityNullException | LogInException | NotExistenceException exc){
             UtilMethods.showErrorDialog(exc.getMessage());
         }
@@ -62,14 +83,13 @@ public class LogInController implements Initializable {
     @FXML
     public void onRegisterButtonClick() throws IOException {
         FXMLLoader registerWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("register-view.fxml"));
-        Stage registerStage=new Stage();
         Scene registerScene = new Scene(registerWindowLoader.load(), 500, 500);
-        registerStage.setTitle("Register");
-        registerStage.setScene(registerScene);
-        registerStage.initModality(Modality.APPLICATION_MODAL);
-        registerStage.initOwner(emailTextField.getScene().getWindow());
-        registerStage.show();
+        primaryStage.setTitle("Register");
+        primaryStage.setScene(registerScene);
+        RegisterController registerController = registerWindowLoader.getController();
+        registerController.setController(controller);
+        registerController.setStage(primaryStage);
+        primaryStage.show();
+
     }
-
-
 }

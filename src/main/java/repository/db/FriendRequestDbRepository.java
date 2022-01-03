@@ -41,7 +41,8 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
                 String from_user=resultSet.getString(1);
                 String to_user=resultSet.getString(2);
                 String status=resultSet.getString(3);
-                return new FriendRequest(status,new Tuple<>(from_user,to_user));
+                String date=resultSet.getString(4);
+                return new FriendRequest(status,new Tuple<>(from_user,to_user),date);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,8 +61,9 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
                 String from = resultSet.getString("from_user");
                 String to = resultSet.getString("to_user");
                 String status = resultSet.getString("status");
+                String date = resultSet.getString("sent_on");
                 Tuple<String,String> id=new Tuple<>(from,to);
-                FriendRequest friendRequest=new FriendRequest(status,id);
+                FriendRequest friendRequest=new FriendRequest(status,id,date);
                 friendRequests.add(friendRequest);
             }
         } catch (SQLException e) {
@@ -117,6 +119,7 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
             ps.setString(2, foundFriendRequest.getId().getLeft());
             ps.setString(3, foundFriendRequest.getId().getRight());
             ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

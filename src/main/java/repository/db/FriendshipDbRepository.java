@@ -1,4 +1,5 @@
 package repository.db;
+import com.example.socialnetworkguiapplication.FriendRequestListener;
 import domain.*;
 import domain.Friendship;
 import domain.validators.Validator;
@@ -9,10 +10,9 @@ import repository.Repository;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class FriendshipDbRepository implements Repository<Tuple<String,String>, Friendship> {
+public class FriendshipDbRepository implements Repository<Tuple<String,String>, Friendship>{
     private String url;
     private String username;
     private String password;
@@ -148,5 +148,4 @@ public class FriendshipDbRepository implements Repository<Tuple<String,String>, 
         return Long.valueOf(size);
 
     }
-
 }
