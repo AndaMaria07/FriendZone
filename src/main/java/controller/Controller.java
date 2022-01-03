@@ -134,8 +134,26 @@ public class Controller {
         friendships.stream()
                 .filter(x->x.getUserEmails().getRight().equals(user.getId()))
                 .forEach(x->{
-                        User friend=userService.findOne(x.getUserEmails().getLeft());
-                        friends.add(new UserDto(friend.getFirstName(),friend.getLastName(),x.getDate()));
+                    User friend=userService.findOne(x.getUserEmails().getLeft());
+                    friends.add(new UserDto(friend.getFirstName(),friend.getLastName(),x.getDate()));
+                });
+        return friends;
+    }
+
+    public List<User> getFriendsOfUser(User user){
+        List<User> friends = new ArrayList<>();
+        Set<Friendship> friendships = (Set<Friendship>)friendshipService.getAll();
+        friendships.stream()
+                .filter(x->x.getUserEmails().getLeft().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getRight());
+                    friends.add(friend);
+                });
+        friendships.stream()
+                .filter(x->x.getUserEmails().getRight().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getLeft());
+                    friends.add(friend);
                 });
         return friends;
     }
@@ -280,8 +298,8 @@ public class Controller {
             }
         }
         return conversation.stream()
-                            .sorted(Comparator.comparing(Message::getDate))
-                            .collect(Collectors.toList());
+                .sorted(Comparator.comparing(Message::getDate))
+                .collect(Collectors.toList());
     }
 
 
@@ -302,7 +320,7 @@ public class Controller {
         Set<FriendRequest> allFriendRequests= (Set<FriendRequest>) friendRequestService.getAll();
         for (FriendRequest friendRequest:allFriendRequests) {
             if(friendRequest.getStatus().equals("pending") && friendRequest.getId().getRight().equals(loggedEmail))
-                 userSet.add(userService.findOne(friendRequest.getId().getLeft()));
+                userSet.add(userService.findOne(friendRequest.getId().getLeft()));
         }
         return userSet;
     }
