@@ -1,4 +1,4 @@
-package controller;
+package com.example.socialnetworkguiapplication;
 
 import com.example.socialnetworkguiapplication.FriendRequestModel;
 import domain.*;

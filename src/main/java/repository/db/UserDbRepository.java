@@ -130,7 +130,7 @@ public class UserDbRepository implements Repository<String, User> {
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery();) {
-            if(resultSet.next()==false)
+            if(!resultSet.next())
                 throw new NotExistenceException();
             else{
                 String firstName = resultSet.getString("firstname");

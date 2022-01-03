@@ -1,6 +1,6 @@
 package ui;
 
-import controller.Controller;
+import com.example.socialnetworkguiapplication.Controller;
 import domain.*;
 import domain.validators.ValidationException;
 import domain.validators.exceptions.*;

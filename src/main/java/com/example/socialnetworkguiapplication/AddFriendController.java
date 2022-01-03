@@ -1,7 +1,5 @@
 package com.example.socialnetworkguiapplication;
-import controller.Controller;
 import domain.User;
-import domain.UserDto;
 import domain.validators.exceptions.ExistenceException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +21,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class AddFriendController implements Initializable {
-
-
     private Controller controller;
     private Stage primaryStage;
     private ObservableList<User> model = FXCollections.observableArrayList();
@@ -36,6 +32,8 @@ public class AddFriendController implements Initializable {
 
     public void setStage(Stage stage) {
         this.primaryStage = stage;
+        initModel();
+        usersTable.setItems(model);
     }
 
     @FXML

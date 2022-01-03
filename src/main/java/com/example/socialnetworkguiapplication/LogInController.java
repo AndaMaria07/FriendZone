@@ -26,6 +26,7 @@ public class LogInController implements Initializable {
     public Button logInButton;
     public Button registerButton;
     public TextField emailTextField,passwordTextField;
+    Controller controller;
 
     private Stage primaryStage;
     double xOffset = 0;
@@ -52,19 +53,13 @@ public class LogInController implements Initializable {
             SocialNetworkApplication.getController().setLoggedPassword(passwordTextField.getText());
             FXMLLoader friendsWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
             Scene friendsScene=new Scene(friendsWindowLoader.load(),661,584);
-            friendsScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                }
+            friendsScene.setOnMousePressed(event -> {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
             });
-            friendsScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    primaryStage.setX(event.getScreenX() - xOffset);
-                    primaryStage.setY(event.getScreenY() - yOffset);
-                }
+            friendsScene.setOnMouseDragged(event -> {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
             });
             primaryStage.setTitle("FriendZone");
             primaryStage.setScene(friendsScene);

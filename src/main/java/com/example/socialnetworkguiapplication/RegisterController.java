@@ -22,6 +22,7 @@ public class RegisterController implements Initializable {
     public TextField passwordTextField;
     public Button registerButton;
     private Stage primaryStage;
+    private Controller controller;
 
     public void setStage(Stage stage) {
         this.primaryStage = stage;

@@ -8,9 +8,9 @@ import domain.validators.exceptions.NotExistenceException;
 import repository.Repository;
 
 public class UserService implements Service<String, User> {
-    private Repository<String,User> userRepository;
+    private Repository<String, User> userRepository;
 
-    public UserService(Repository<String,User> userRepository) {
+    public UserService(Repository<String, User> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -25,7 +25,7 @@ public class UserService implements Service<String, User> {
     }
 
     @Override
-    public void remove(User e) throws EntityNullException, NotExistenceException, ValidationException{
+    public void remove(User e) throws EntityNullException, NotExistenceException, ValidationException {
         this.userRepository.delete(e.getId());
     }
 
@@ -35,14 +35,15 @@ public class UserService implements Service<String, User> {
     }
 
     @Override
-    public void update(User newUser) throws EntityNullException, NotExistenceException, ValidationException{
+    public void update(User newUser) throws EntityNullException, NotExistenceException, ValidationException {
         userRepository.update(newUser);
     }
 
-    public User findOneByEmailAndPassword(String loggedEmail, String password) throws EntityNullException, NotExistenceException, ValidationException{
+    public void findOneByEmailAndPassword(String loggedEmail, String password) throws EntityNullException, NotExistenceException, ValidationException {
         User foundUser = userRepository.findOne(loggedEmail);
-        if(foundUser.getPassword().equals(password))
-            return foundUser;
-        throw new NotExistenceException();
+        if (foundUser == null)
+            throw new NotExistenceException();
+        if (foundUser.getPassword().equals(password)) {
+        }
     }
 }

@@ -1,6 +1,6 @@
 package MainUI;
 
-import controller.Controller;
+import com.example.socialnetworkguiapplication.Controller;
 import domain.*;
 import domain.validators.EmailValidator;
 import domain.validators.FriendshipValidator;

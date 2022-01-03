@@ -2,7 +2,7 @@ package com.example.socialnetworkguiapplication;
 
 <<<<<<< HEAD
 =======
-import controller.Controller;
+import com.example.socialnetworkguiapplication.Controller;
 >>>>>>> lab6-AddRemoveFriendsFeature
 import domain.*;
 import javafx.collections.FXCollections;

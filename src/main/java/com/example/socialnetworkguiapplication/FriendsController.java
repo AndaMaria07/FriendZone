@@ -1,6 +1,5 @@
 package com.example.socialnetworkguiapplication;
 
-import controller.Controller;
 import domain.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,13 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -55,6 +52,7 @@ public class FriendsController implements Initializable,FriendRequestListener {
 
     public void setStage(Stage stage) {
         this.primaryStage = stage;
+        friendsTable.setItems(getTableData());
     }
 
     @Override
@@ -102,7 +100,6 @@ public class FriendsController implements Initializable,FriendRequestListener {
         AddFriendController addFriendController = addFriendWindowLoader.getController();
         addFriendController.setController(controller);
         addFriendController.setStage(primaryStage);
-
     }
 
     @FXML
@@ -111,6 +108,7 @@ public class FriendsController implements Initializable,FriendRequestListener {
         if(selected != null){
             controller.removeFriend(selected.getEmail());
             MessageAlert.showMessage(null, Alert.AlertType.INFORMATION,"Remove Friend","Succesfully removed!");
+            friendsTable.setItems(getTableData());
         }
         else{
             MessageAlert.showErrorMessage(null,"Please select an user!");
