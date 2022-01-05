@@ -1,5 +1,6 @@
 package service;
 
+import com.example.socialnetworkguiapplication.FriendRequestListener;
 import domain.*;
 import domain.validators.ValidationException;
 import domain.validators.exceptions.EntityNullException;
@@ -12,7 +13,7 @@ import utils.Constants;
 import java.time.LocalDateTime;
 import java.util.*;
 
-public class FriendshipService implements Service<Tuple<String,String>, Friendship> {
+public class FriendshipService implements Service<Tuple<String,String>, Friendship>, FriendRequestListener {
     private Repository<Tuple<String,String>, Friendship> friendshipRepository;
 
     public FriendshipService(Repository<Tuple<String,String>, Friendship> friendshipRepository) {
@@ -81,5 +82,10 @@ public class FriendshipService implements Service<Tuple<String,String>, Friendsh
     @Override
     public Friendship findOne(Tuple<String, String> stringStringTuple) {
         return friendshipRepository.findOne(stringStringTuple);
+    }
+
+    @Override
+    public void onFriendRequestAccepted(Friendship friendship) {
+        add(friendship);
     }
 }

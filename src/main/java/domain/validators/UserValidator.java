@@ -1,6 +1,7 @@
 package domain.validators;
 
 import domain.User;
+import domain.validators.exceptions.PasswordValidator;
 
 public class UserValidator implements Validator<User> {
     @Override
@@ -16,6 +17,13 @@ public class UserValidator implements Validator<User> {
         EmailValidator emailValidator=new EmailValidator();
         try{
             emailValidator.validate(entity.getEmail());
+        }catch (ValidationException exc){
+            val=val.concat(exc.getMessage());
+        }
+
+        PasswordValidator passwordValidator=new PasswordValidator();
+        try{
+            passwordValidator.validate(entity.getPassword());
         }catch (ValidationException exc){
             val=val.concat(exc.getMessage());
         }

@@ -14,13 +14,15 @@ public class UserDbRepository implements Repository<String, User> {
     private String username;
     private String password;
     private Validator<User> validator;
+    private Validator<String> emailValidator;
     private String loggedId;
 
-    public UserDbRepository(String url, String username, String password, Validator<User> validator) {
+    public UserDbRepository(String url, String username, String password, Validator<User> validator, Validator<String> emailValidator) {
         this.url = url;
         this.username = username;
         this.password = password;
         this.validator = validator;
+        this.emailValidator=emailValidator;
         this.loggedId = "";
     }
 
@@ -89,13 +91,13 @@ public class UserDbRepository implements Repository<String, User> {
 
     @Override
     public void update(User entity) {
+        validator.validate(entity);
         findOne(entity.getEmail());
-        String sql = "update users set firstname = ?, lastname = ? where email = ?";
+        String sql = "update users set password=? where email = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, entity.getFirstName());
-            ps.setString(2, entity.getLastName());
-            ps.setString(3, entity.getId());
+            ps.setString(1, entity.getPassword());
+            ps.setString(2, entity.getEmail());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,11 +123,14 @@ public class UserDbRepository implements Repository<String, User> {
 
     @Override
     public User findOne(String userEmail) {
+        emailValidator.validate(userEmail);
+        if(userEmail.equals(""))
+            throw new EntityNullException();
         String sql = "SELECT * FROM users WHERE email='" + userEmail + "'";
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery();) {
-            if(resultSet.next()==false)
+            if(!resultSet.next())
                 throw new NotExistenceException();
             else{
                 String firstName = resultSet.getString("firstname");

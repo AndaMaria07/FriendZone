@@ -1,11 +1,12 @@
 package domain;
 
+import com.example.socialnetworkguiapplication.FriendRequestListener;
 import utils.Constants;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Friendship extends Entity<Tuple<String,String>>{
+public class Friendship extends Entity<Tuple<String, String>> {
     private Tuple<String, String> userEmails;
     private String date;
 

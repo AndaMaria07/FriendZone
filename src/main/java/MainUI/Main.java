@@ -1,7 +1,8 @@
 package MainUI;
 
-import controller.Controller;
+import com.example.socialnetworkguiapplication.Controller;
 import domain.*;
+import domain.validators.EmailValidator;
 import domain.validators.FriendshipValidator;
 import domain.validators.UserValidator;
 import domain.validators.Validator;
@@ -17,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
 
         Validator<User> userValidator = new UserValidator();
+        Validator<String> emailValidator = new EmailValidator();
         Validator<Friendship> friendshipValidator = new FriendshipValidator();
 
         //In memory
@@ -35,7 +37,7 @@ public class Main {
 
         //In db
 
-        Repository<String, User> userDbRepository=new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana", userValidator);
+        Repository<String, User> userDbRepository=new UserDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","anda", userValidator,emailValidator);
         Repository<Tuple<String, String>, Friendship> friendshipDbRepository =new FriendshipDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana",friendshipValidator);
         Repository<Long, Message> messageDbRepository = new MessageDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana");
         Repository<Tuple<String, String>, FriendRequest> friendRequestDbRepository=new FriendRequestDbRepository("jdbc:postgresql://localhost:5432/SocialNetwork", "postgres","diana");

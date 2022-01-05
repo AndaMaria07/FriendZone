@@ -1,6 +1,6 @@
 package ui;
 
-import controller.Controller;
+import com.example.socialnetworkguiapplication.Controller;
 import domain.*;
 import domain.validators.ValidationException;
 import domain.validators.exceptions.*;
@@ -39,9 +39,10 @@ public class UserInterface implements UI<String,User,Tuple<String,String>,Friend
         System.out.println("    13. Find one user's friends");
         System.out.println("    14. Send message");
         System.out.println("    15. Reply message");
-        System.out.println("    16. View conversation");
-        System.out.println("    17. View requests");
-        System.out.println("    18. Exit");
+        System.out.println("    16. Reply all");
+        System.out.println("    17. View conversation");
+        System.out.println("    18. View requests");
+        System.out.println("    19. Exit");
         System.out.println("----------------MENU------------------");
     }
 
@@ -61,7 +62,7 @@ public class UserInterface implements UI<String,User,Tuple<String,String>,Friend
                 System.out.println("Enter option:");
                 String input = in.next();
                 switch (input) {
-                    case "18":
+                    case "19":
                         run = false;
                         break;
                     case "1":
@@ -110,9 +111,12 @@ public class UserInterface implements UI<String,User,Tuple<String,String>,Friend
                         this.replyMessage();
                         break;
                     case "16":
-                        this.viewConversation();
+                        this.replyAll();
                         break;
                     case "17":
+                        this.viewConversation();
+                        break;
+                    case "18":
                         this.viewRequests();
                         break;
                     default:
@@ -197,6 +201,20 @@ public class UserInterface implements UI<String,User,Tuple<String,String>,Friend
         controller.replyMessage(id,message);
     }
 
+    public void replyAll(){
+        List<Message> messagesOfCrtUser = controller.allMessages();
+        for(Message message : messagesOfCrtUser){
+            if(message.getTo().size()>1)
+            System.out.println(message.getId() + "|" + message.getDate().format(Constants.DATE_TIME_FORMATTER) + " | " + message.getFrom().getFirstName() + " " + message.getFrom().getLastName()  + " | " + message.getMessage());
+        }
+        System.out.println("Enter which conversation group you want to reply: ");
+        Long id = Long.parseLong(in.next());
+
+        System.out.println("Enter message: ");
+        in.nextLine();
+        String message = in.nextLine();
+        controller.replyAll(id,message);
+    }
     public void sendMessage() {
         List<User> usersToSend = new ArrayList<>();
         boolean ok = true;

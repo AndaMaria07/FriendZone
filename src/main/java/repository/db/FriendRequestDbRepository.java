@@ -41,7 +41,8 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
                 String from_user=resultSet.getString(1);
                 String to_user=resultSet.getString(2);
                 String status=resultSet.getString(3);
-                return new FriendRequest(status,new Tuple<>(from_user,to_user));
+                String date=resultSet.getString(4);
+                return new FriendRequest(status,new Tuple<>(from_user,to_user),date);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,8 +61,9 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
                 String from = resultSet.getString("from_user");
                 String to = resultSet.getString("to_user");
                 String status = resultSet.getString("status");
+                String date = resultSet.getString("sent_on");
                 Tuple<String,String> id=new Tuple<>(from,to);
-                FriendRequest friendRequest=new FriendRequest(status,id);
+                FriendRequest friendRequest=new FriendRequest(status,id,date);
                 friendRequests.add(friendRequest);
             }
         } catch (SQLException e) {
@@ -79,12 +81,13 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
             findOne(entity.getId());
             throw new ExistenceException();
         }catch(NotExistenceException exc) {
-            String sql = "insert into friend_requests(status, from_user, to_user ) values (?, ?, ?)";
+            String sql = "insert into friend_requests(status, from_user, to_user,sent_on ) values (?, ?, ?,?)";
             try (Connection connection = DriverManager.getConnection(url, username, password);
                  PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, (entity).getStatus());
                 ps.setString(2, (entity).getId().getLeft());
                 ps.setString(3, (entity).getId().getRight());
+                ps.setString(4, (entity).getDate());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -117,6 +120,7 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
             ps.setString(2, foundFriendRequest.getId().getLeft());
             ps.setString(3, foundFriendRequest.getId().getRight());
             ps.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -8,9 +8,9 @@ import domain.validators.exceptions.NotExistenceException;
 import repository.Repository;
 
 public class UserService implements Service<String, User> {
-    private Repository<String,User> userRepository;
+    private Repository<String, User> userRepository;
 
-    public UserService(Repository<String,User> userRepository) {
+    public UserService(Repository<String, User> userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -25,17 +25,25 @@ public class UserService implements Service<String, User> {
     }
 
     @Override
-    public void remove(User e) throws EntityNullException, NotExistenceException{
+    public void remove(User e) throws EntityNullException, NotExistenceException, ValidationException {
         this.userRepository.delete(e.getId());
     }
 
     @Override
-    public User findOne(String id) throws EntityNullException, NotExistenceException {
+    public User findOne(String id) throws EntityNullException, NotExistenceException, ValidationException {
         return userRepository.findOne(id);
     }
 
     @Override
-    public void update(User newUser) throws EntityNullException, NotExistenceException, ValidationException{
+    public void update(User newUser) throws EntityNullException, NotExistenceException, ValidationException {
         userRepository.update(newUser);
+    }
+
+    public void findOneByEmailAndPassword(String loggedEmail, String password) throws EntityNullException, NotExistenceException, ValidationException {
+        User foundUser = userRepository.findOne(loggedEmail);
+        if (foundUser == null)
+            throw new NotExistenceException();
+        if (foundUser.getPassword().equals(password)) {
+        }
     }
 }
