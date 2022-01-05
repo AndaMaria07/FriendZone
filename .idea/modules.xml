@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SocialNetworkGUIApplication.iml" filepath="$PROJECT_DIR$/SocialNetworkGUIApplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/SocialNetworkGUIApplication.main.iml" filepath="$PROJECT_DIR$/.idea/modules/SocialNetworkGUIApplication.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/SocialNetworkGUIApplication.test.iml" filepath="$PROJECT_DIR$/.idea/modules/SocialNetworkGUIApplication.test.iml" />
     </modules>
   </component>
