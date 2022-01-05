@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="552.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.AddFriendController">
+   <children>
+      <Button layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back" />
+      <TableView fx:id="usersTable" layoutX="11.0" layoutY="81.0" prefHeight="386.0" prefWidth="710.0">
+         <columns>
+            <TableColumn fx:id="userEmailColumn" minWidth="20.0" prefWidth="219.20001792907715" text="Email" />
+            <TableColumn fx:id="userFirstNameColumn" prefWidth="275.199951171875" text="Firstname" />
+            <TableColumn fx:id="userLastNameColumn" prefWidth="215.20004272460938" text="Lastname" />
+         </columns>
+      </TableView>
+      <Button layoutX="441.0" layoutY="22.0" mnemonicParsing="false" onAction="#addFriendButtonClick" prefHeight="38.0" prefWidth="102.0" text="Add Friend" />
+      <TextField fx:id="searchBar" layoutX="162.0" layoutY="22.0" opacity="0.27" prefHeight="38.0" prefWidth="275.0" />
+   </children>
+</AnchorPane>
