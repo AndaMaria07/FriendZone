@@ -1,4 +1,4 @@
-package controller;
+package com.example.socialnetworkguiapplication;
 
 import com.example.socialnetworkguiapplication.FriendRequestModel;
 import domain.*;
@@ -136,6 +136,24 @@ public class Controller {
                 .forEach(x->{
                     User friend=userService.findOne(x.getUserEmails().getLeft());
                     friends.add(new UserDto(friend.getFirstName(),friend.getLastName(),x.getDate()));
+                });
+        return friends;
+    }
+
+    public List<User> getFriendsOfUser(User user){
+        List<User> friends = new ArrayList<>();
+        Set<Friendship> friendships = (Set<Friendship>)friendshipService.getAll();
+        friendships.stream()
+                .filter(x->x.getUserEmails().getLeft().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getRight());
+                    friends.add(friend);
+                });
+        friendships.stream()
+                .filter(x->x.getUserEmails().getRight().equals(user.getId()))
+                .forEach(x->{
+                    User friend=userService.findOne(x.getUserEmails().getLeft());
+                    friends.add(friend);
                 });
         return friends;
     }

@@ -51,10 +51,10 @@
             </font>
         </Label>
         <Button layoutX="424.0" layoutY="471.0" mnemonicParsing="false" onAction="#removeFriendOnClicked" prefHeight="34.0" prefWidth="150.0" text="Remove Friend">
-            <font>
-                <Font name="Corbel" size="18.0" />
-            </font>
-        </Button>
+         <font>
+            <Font name="Corbel" size="18.0" />
+         </font>
+      </Button>
         <TextField fx:id="searchBar" layoutX="376.0" layoutY="28.0" prefHeight="26.0" prefWidth="188.0" />
         <ImageView fitHeight="81.0" fitWidth="49.0" layoutX="572.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -62,10 +62,10 @@
             </image>
         </ImageView>
         <Label layoutX="90.0" layoutY="312.0" prefHeight="50.0" prefWidth="277.0" text="Click Add Friends.">
-            <font>
-                <Font name="Corbel Light" size="18.0" />
-            </font>
-        </Label>
+         <font>
+            <Font name="Corbel Light" size="18.0" />
+         </font>
+      </Label>
         <Label layoutX="85.0" layoutY="395.0" text="Click Friend Requests.">
             <font>
                 <Font name="Corbel Light" size="18.0" />

@@ -12,7 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+<<<<<<< HEAD
 import javafx.scene.input.MouseEvent;
+=======
+>>>>>>> lab6-FriendRequestFeature
 import repository.Repository;
 import repository.db.FriendRequestDbRepository;
 import repository.db.FriendshipDbRepository;
@@ -27,7 +30,10 @@ public class SocialNetworkApplication extends Application {
     Scene logInScene;
     private double xOffset = 0;
     private double yOffset = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> lab6-FriendRequestFeature
 
     public static Controller getController() {
         return controller;
@@ -54,6 +60,7 @@ public class SocialNetworkApplication extends Application {
         FXMLLoader logInWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
         logInScene = new Scene(logInWindowLoader.load(),612,341);
         logInScene.setFill(Color.TRANSPARENT);
+<<<<<<< HEAD
         logInScene.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -67,6 +74,15 @@ public class SocialNetworkApplication extends Application {
                 stage.setX(event.getScreenX() - xOffset);
                 stage.setY(event.getScreenY() - yOffset);
             }
+=======
+        logInScene.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        logInScene.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+>>>>>>> lab6-FriendRequestFeature
         });
         stage.setTitle("LogIn");
         stage.setScene(logInScene);

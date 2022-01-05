@@ -81,12 +81,13 @@ public class FriendRequestDbRepository implements Repository<Tuple<String,String
             findOne(entity.getId());
             throw new ExistenceException();
         }catch(NotExistenceException exc) {
-            String sql = "insert into friend_requests(status, from_user, to_user ) values (?, ?, ?)";
+            String sql = "insert into friend_requests(status, from_user, to_user,sent_on ) values (?, ?, ?,?)";
             try (Connection connection = DriverManager.getConnection(url, username, password);
                  PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, (entity).getStatus());
                 ps.setString(2, (entity).getId().getLeft());
                 ps.setString(3, (entity).getId().getRight());
+                ps.setString(4, (entity).getDate());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();

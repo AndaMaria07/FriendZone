@@ -22,6 +22,7 @@ public class RegisterController implements Initializable {
     public TextField emailTextField;
     public TextField passwordTextField;
     public Button registerButton;
+<<<<<<< HEAD
     private Controller controller;
     private Stage primaryStage;
 
@@ -31,6 +32,14 @@ public class RegisterController implements Initializable {
 
     public void setController(Controller controller) {
         this.controller = controller;
+    }
+=======
+    private Stage primaryStage;
+    private Controller controller;
+>>>>>>> lab6-FriendRequestFeature
+
+    public void setStage(Stage stage) {
+        this.primaryStage = stage;
     }
 
     public void setController(Controller controller) {
