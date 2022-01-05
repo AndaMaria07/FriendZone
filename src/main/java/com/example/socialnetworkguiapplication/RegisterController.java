@@ -1,6 +1,4 @@
 package com.example.socialnetworkguiapplication;
-
-import controller.Controller;
 import domain.validators.*;
 import domain.validators.exceptions.EntityNullException;
 import domain.validators.exceptions.ExistenceException;
@@ -33,9 +31,6 @@ public class RegisterController implements Initializable {
         this.controller = controller;
     }
 
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }

@@ -1,6 +1,4 @@
 package com.example.socialnetworkguiapplication;
-
-import controller.Controller;
 import domain.validators.*;
 import domain.validators.exceptions.EntityNullException;
 import domain.validators.exceptions.LogInException;
@@ -30,20 +28,6 @@ public class LogInController implements Initializable {
     Controller controller;
 
     private Stage primaryStage;
-    double xOffset = 0;
-    double yOffset = 0;
-
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
-    public void setStage(Stage stage) {
-        this.primaryStage = stage;
-    }
-
-    Controller controller;
-    private Stage primaryStage;
-
     double xOffset = 0;
     double yOffset = 0;
 

@@ -106,22 +106,13 @@ public class FriendsController implements Initializable,FriendRequestListener {
     @FXML
     void removeFriendOnClicked(ActionEvent event) {
         UserModel selected = friendsTable.getSelectionModel().getSelectedItem();
-        if(selected != null){
+        if (selected != null) {
             controller.removeFriend(selected.getEmail());
-            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION,"Remove Friend","Succesfully removed!");
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Remove Friend", "Succesfully removed!");
             friendsTable.setItems(getTableData());
+        } else {
+            MessageAlert.showErrorMessage(null, "Please select an user!");
         }
-        else{
-            MessageAlert.showErrorMessage(null,"Please select an user!");
-        }
-
-
-    void handleSearch(){
-        Predicate<UserModel> p1 = n->n.getFirstName().contains(searchBar.getText());
-        Predicate<UserModel> p2 = n->n.getLastName().contains(searchBar.getText());
-        List<UserModel> userModelList = this.getTableData().stream().filter(p1.or(p2)).collect(Collectors.toList());
-        friendsModels.setAll(userModelList);
-        friendsTable.setItems(friendsModels);
     }
 
     @FXML
@@ -148,7 +139,6 @@ public class FriendsController implements Initializable,FriendRequestListener {
         logInController.setController(controller);
         logInController.setStage(primaryStage);
     }
-}
 
     void handleSearch(){
         Predicate<UserModel> p1 = n->n.getFirstName().contains(searchBar.getText());
@@ -156,30 +146,5 @@ public class FriendsController implements Initializable,FriendRequestListener {
         List<UserModel> userModelList = this.getTableData().stream().filter(p1.or(p2)).collect(Collectors.toList());
         friendsModels.setAll(userModelList);
         friendsTable.setItems(friendsModels);
-    }
-
-    @FXML
-    void logOutOnClicked(ActionEvent event) throws IOException {
-        FXMLLoader logOutWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
-        Scene logInScene = new Scene(logOutWindowLoader.load(), 612,341);
-        logInScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-        logInScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - xOffset);
-                primaryStage.setY(event.getScreenY() - yOffset);
-            }
-        });
-        primaryStage.setTitle("LogIn");
-        primaryStage.setScene(logInScene);
-        LogInController logInController = logOutWindowLoader.getController();
-        logInController.setController(controller);
-        logInController.setStage(primaryStage);
     }
 }
