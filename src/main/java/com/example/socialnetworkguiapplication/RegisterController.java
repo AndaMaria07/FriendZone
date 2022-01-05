@@ -1,5 +1,6 @@
 package com.example.socialnetworkguiapplication;
 
+import controller.Controller;
 import domain.validators.*;
 import domain.validators.exceptions.EntityNullException;
 import domain.validators.exceptions.ExistenceException;
@@ -21,10 +22,20 @@ public class RegisterController implements Initializable {
     public TextField emailTextField;
     public TextField passwordTextField;
     public Button registerButton;
+    private Controller controller;
+    private Stage primaryStage;
+
+    public void setStage(Stage stage) {
+        this.primaryStage = stage;
+    }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-         }
+    }
 
     public void onRegisterButtonClick() throws IOException {
         String email = emailTextField.getText();
@@ -33,11 +44,14 @@ public class RegisterController implements Initializable {
         String lastName = lastNameTextField.getText();
         try {
             SocialNetworkApplication.getController().addUser(firstName, lastName, email, password);
-            FXMLLoader friendsWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
-            Scene friendsScene=new Scene(friendsWindowLoader.load(),650,500);
-            Stage stage= (Stage) emailTextField.getScene().getWindow();
-            stage.setScene(friendsScene);
-            stage.show();
+            FXMLLoader logInWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
+            Scene logInScene = new Scene(logInWindowLoader.load(), 612, 341);
+            primaryStage.setTitle("Log In");
+            primaryStage.setScene(logInScene);
+            LogInController logInController = logInWindowLoader.getController();
+            logInController.setController(controller);
+            logInController.setStage(primaryStage);
+
         } catch (EntityNullException | ValidationException | ExistenceException exc) {
             UtilMethods.showErrorDialog(exc.getMessage());
         }
