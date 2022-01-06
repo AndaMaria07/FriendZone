@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="963.0" style="-fx-background-color: #EEE5EE; -fx-background-radius: 18 18 18 18; -fx-border-radius: 18 18 18 18;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.FriendsController">
+<AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="963.0" style="-fx-background-color: #EEE5EE; -fx-background-radius: 18 18 18 18; -fx-border-radius: 18 18 18 18;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.ProfileController">
     <children>
         <TableView fx:id="friendsTable" layoutX="370.0" layoutY="110.0" prefHeight="284.0" prefWidth="578.0" style="-fx-background-color: #A2C8A2; -fx-background-radius: 18 18 18 18; -fx-border-radius: 18 18 18 18;">
             <columns>
@@ -73,7 +73,7 @@
          <font>
             <Font name="Corbel" size="18.0" />
          </font></Button>
-        <Label fx:id="loggedEmail" layoutX="109.0" layoutY="36.0" prefHeight="26.0" prefWidth="157.0">
+        <Label fx:id="loggedEmail" layoutX="109.0" layoutY="27.0" prefHeight="26.0" prefWidth="157.0">
             <font>
                 <Font name="Corbel" size="28.0" />
             </font>
@@ -83,6 +83,10 @@
             <Font name="Corbel Light" size="20.0" />
          </font>
       </Label>
-      <ImageView fx:id="profilePhotoImageView" fitHeight="150.0" fitWidth="200.0" layoutX="88.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="profilePhotoImageView" fitHeight="164.0" fitWidth="167.0" layoutX="106.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../icons/defaultProfilePhoto.jpg" />
+         </image>
+      </ImageView>
     </children>
 </AnchorPane>

@@ -11,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import utils.UtilMethods;
 
 import java.io.IOException;
@@ -51,7 +48,7 @@ public class LogInController implements Initializable {
             SocialNetworkApplication.getController().setLoggedEmail(email);
             SocialNetworkApplication.getController().setLoggedPassword(passwordTextField.getText());
             FXMLLoader friendsWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
-            Scene friendsScene=new Scene(friendsWindowLoader.load(),661,584);
+            Scene friendsScene=new Scene(friendsWindowLoader.load());
             friendsScene.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -68,9 +65,9 @@ public class LogInController implements Initializable {
             });
             primaryStage.setTitle("FriendZone");
             primaryStage.setScene(friendsScene);
-            FriendsController friendsController = friendsWindowLoader.getController();
-            friendsController.setController(controller);
-            friendsController.setStage(primaryStage);
+            ProfileController profileController = friendsWindowLoader.getController();
+            profileController.setController(controller);
+            profileController.setStage(primaryStage);
 
         }catch (ValidationException | EntityNullException | LogInException | NotExistenceException exc){
             UtilMethods.showErrorDialog(exc.getMessage());

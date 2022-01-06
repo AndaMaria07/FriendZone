@@ -93,9 +93,9 @@ public class AddFriendController implements Initializable {
         primaryStage.setTitle("FriendZone");
         primaryStage.setScene(scene);
 
-        FriendsController friendsController = fxmlLoader.getController();
-        friendsController.setController(controller);
-        friendsController.setStage(primaryStage);
+        ProfileController profileController = fxmlLoader.getController();
+        profileController.setController(controller);
+        profileController.setStage(primaryStage);
 
     }
 
