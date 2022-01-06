@@ -69,15 +69,15 @@ public class AddFriendController implements Initializable {
     }
 
     @FXML
-    void addFriendButtonClick(ActionEvent event) {
+    void onSendRequestButtonClick(ActionEvent event) {
         User selected = usersTable.getSelectionModel().getSelectedItem();
         if(selected != null){
             try {
                 controller.sendRequest(selected.getEmail());
-                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Friend Request", "Succesfully sent!");
+                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Friend Request", "Successfully sent!");
             }
             catch (ExistenceException ex){
-                MessageAlert.showErrorMessage(null,ex.getMessage());
+                MessageAlert.showErrorMessage(null,ex.getMessage()+"\nChanged your mind about "+selected.getEmail()+"?\nSelect him/her again and click Unsend Request.");
             }
         }
         else{
@@ -86,16 +86,31 @@ public class AddFriendController implements Initializable {
     }
 
     @FXML
+    public void onUnsendRequestButtonClick(ActionEvent actionEvent) {
+        User selectedUser=usersTable.getSelectionModel().getSelectedItem();
+        if(selectedUser!=null){
+            try {
+                controller.unsendRequest(selectedUser.getEmail());
+                MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Friend Request", "Successfully deleted!");
+            }
+            catch (ExistenceException ex){
+                MessageAlert.showErrorMessage(null,ex.getMessage());
+            }
+        }else
+            MessageAlert.showErrorMessage(null,"Please select an user!");
+    }
+
+    @FXML
     void onBackButtonClick(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("profile-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
 
         primaryStage.setTitle("FriendZone");
         primaryStage.setScene(scene);
 
-        FriendsController friendsController = fxmlLoader.getController();
-        friendsController.setController(controller);
-        friendsController.setStage(primaryStage);
+        ProfileController profileController = fxmlLoader.getController();
+        profileController.setController(controller);
+        profileController.setStage(primaryStage);
 
     }
 

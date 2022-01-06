@@ -314,6 +314,12 @@ public class Controller {
         }
     }
 
+    public void unsendRequest(String email) {
+        userService.findOne((email));
+        FriendRequest friendRequestToDelete=friendRequestService.findOne(new Tuple<>(getLoggedEmail(),email));
+        friendRequestService.remove(friendRequestToDelete);
+    }
+
     public Iterable<User> getUsersWhoSentRequests() throws LogInException{
         Set<User> userSet=new HashSet<>();
         String loggedEmail=getLoggedEmail();
