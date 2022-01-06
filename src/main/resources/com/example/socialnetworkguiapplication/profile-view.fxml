@@ -25,7 +25,7 @@
                 <Font name="Corbel" size="26.0" />
             </font>
         </Label>
-        <Button fx:id="addFriendsButton" layoutX="113.0" layoutY="303.0" mnemonicParsing="false" onAction="#onAddFriendsButtonClick" prefHeight="35.0" prefWidth="150.0" text="Add Friends">
+        <Button fx:id="addFriendsButton" layoutX="113.0" layoutY="303.0" mnemonicParsing="false" onAction="#onAddFriendButtonClicked" prefHeight="35.0" prefWidth="150.0" text="Add Friends">
             <font>
                 <Font name="Corbel" size="18.0" />
             </font>
@@ -45,12 +45,12 @@
                 <Font name="Corbel Light" size="20.0" />
             </font>
         </Label>
-        <Label layoutX="435.0" layoutY="424.0" prefHeight="34.0" prefWidth="238.0" text="Are you angry on your friend? ">
+        <Label layoutX="435.0" layoutY="424.0" prefHeight="34.0" prefWidth="238.0" text="Are you angry at your friend? ">
             <font>
                 <Font name="Corbel Light" size="20.0" />
             </font>
         </Label>
-        <Button layoutX="716.0" layoutY="423.0" mnemonicParsing="false" onAction="#removeFriendOnClicked" prefHeight="34.0" prefWidth="150.0" text="Remove Friend">
+        <Button layoutX="716.0" layoutY="423.0" mnemonicParsing="false" onAction="#onRemoveFriendButtonClicked" prefHeight="34.0" prefWidth="150.0" text="Remove Friend">
          <font>
             <Font name="Corbel" size="18.0" />
          </font>
@@ -69,7 +69,7 @@
                 <Image url="@../../../icons/icons8_Logout_100px.png" />
             </image>
         </ImageView>
-        <Button layoutX="114.0" layoutY="476.0" mnemonicParsing="false" onAction="#logOutOnClicked" prefHeight="35.0" prefWidth="150.0" text="LogOut">
+        <Button layoutX="114.0" layoutY="476.0" mnemonicParsing="false" onAction="#onlogOutButtonClicked" prefHeight="35.0" prefWidth="150.0" text="LogOut">
          <font>
             <Font name="Corbel" size="18.0" />
          </font></Button>

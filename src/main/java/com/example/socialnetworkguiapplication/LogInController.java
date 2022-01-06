@@ -47,8 +47,8 @@ public class LogInController implements Initializable {
             String email=emailTextField.getText();
             SocialNetworkApplication.getController().setLoggedEmail(email);
             SocialNetworkApplication.getController().setLoggedPassword(passwordTextField.getText());
-            FXMLLoader friendsWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("friends-view.fxml"));
-            Scene friendsScene=new Scene(friendsWindowLoader.load());
+            FXMLLoader profileWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("profile-view.fxml"));
+            Scene friendsScene=new Scene(profileWindowLoader.load());
             friendsScene.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -65,7 +65,7 @@ public class LogInController implements Initializable {
             });
             primaryStage.setTitle("FriendZone");
             primaryStage.setScene(friendsScene);
-            ProfileController profileController = friendsWindowLoader.getController();
+            ProfileController profileController = profileWindowLoader.getController();
             profileController.setController(controller);
             profileController.setStage(primaryStage);
 

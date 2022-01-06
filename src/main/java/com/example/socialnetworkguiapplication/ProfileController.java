@@ -93,9 +93,9 @@ public class ProfileController implements Initializable,FriendRequestListener {
     }
 
     @FXML
-    public void onAddFriendsButtonClick() throws IOException {
+    public void onAddFriendButtonClicked() throws IOException {
         FXMLLoader addFriendWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("add-friends-view.fxml"));
-        Scene addFriendScene = new Scene(addFriendWindowLoader.load(), 700, 400);
+        Scene addFriendScene = new Scene(addFriendWindowLoader.load());
         primaryStage.setTitle("Add Friend");
         primaryStage.setScene(addFriendScene);
         AddFriendController addFriendController = addFriendWindowLoader.getController();
@@ -104,7 +104,7 @@ public class ProfileController implements Initializable,FriendRequestListener {
     }
 
     @FXML
-    void removeFriendOnClicked(ActionEvent event) {
+    void onRemoveFriendButtonClicked(ActionEvent event) {
         UserModel selected = friendsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             controller.removeFriend(selected.getEmail());
@@ -116,7 +116,7 @@ public class ProfileController implements Initializable,FriendRequestListener {
     }
 
     @FXML
-    void logOutOnClicked(ActionEvent event) throws IOException {
+    void onlogOutButtonClicked(ActionEvent event) throws IOException {
         FXMLLoader logOutWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
         Scene logInScene = new Scene(logOutWindowLoader.load(), 612,341);
         logInScene.setOnMousePressed(new EventHandler<MouseEvent>() {
