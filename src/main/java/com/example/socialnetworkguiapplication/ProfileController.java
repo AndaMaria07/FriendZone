@@ -12,6 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,6 +34,9 @@ public class ProfileController implements Initializable,FriendRequestListener {
     public TableColumn<UserModel,String> friendshipDateColumn;
     public Button addFriendsButton;
     public Button friendRequestsButton;
+    public Button chatButton;
+    public Button logOutButton;
+    public Button removeFriendButton;
     private ObservableList<UserModel> friendsModels;
 
     @FXML
@@ -77,9 +83,9 @@ public class ProfileController implements Initializable,FriendRequestListener {
     }
 
     public void onFriendRequestsButtonClick() throws IOException {
-        FXMLLoader friendRequestsWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("friend-requests-view.fxml"));
+        FXMLLoader friendRequestsWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("friend-requests-view2.fxml"));
         Stage friendRequestsStage=new Stage();
-        Scene friendRequestsScene = new Scene(friendRequestsWindowLoader.load(), 700, 400);
+        Scene friendRequestsScene = new Scene(friendRequestsWindowLoader.load());
         friendRequestsStage.setTitle("FriendRequests");
         friendRequestsStage.setScene(friendRequestsScene);
         friendRequestsStage.initModality(Modality.APPLICATION_MODAL);
@@ -94,7 +100,7 @@ public class ProfileController implements Initializable,FriendRequestListener {
 
     @FXML
     public void onAddFriendButtonClicked() throws IOException {
-        FXMLLoader addFriendWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("add-friends-view.fxml"));
+        FXMLLoader addFriendWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("add-friends-view2.fxml"));
         Scene addFriendScene = new Scene(addFriendWindowLoader.load());
         primaryStage.setTitle("Add Friend");
         primaryStage.setScene(addFriendScene);
@@ -108,36 +114,11 @@ public class ProfileController implements Initializable,FriendRequestListener {
         UserModel selected = friendsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             controller.removeFriend(selected.getEmail());
-            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Remove Friend", "Succesfully removed!");
+            MessageAlert.showMessage(null, Alert.AlertType.INFORMATION, "Remove Friend", "Successfully removed!");
             friendsTable.setItems(getTableData());
         } else {
             MessageAlert.showErrorMessage(null, "Please select an user!");
         }
-    }
-
-    @FXML
-    void onlogOutButtonClicked(ActionEvent event) throws IOException {
-        FXMLLoader logOutWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("log-in-view.fxml"));
-        Scene logInScene = new Scene(logOutWindowLoader.load(), 612,341);
-        logInScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = event.getSceneX();
-                yOffset = event.getSceneY();
-            }
-        });
-        logInScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                primaryStage.setX(event.getScreenX() - xOffset);
-                primaryStage.setY(event.getScreenY() - yOffset);
-            }
-        });
-        primaryStage.setTitle("LogIn");
-        primaryStage.setScene(logInScene);
-        LogInController logInController = logOutWindowLoader.getController();
-        logInController.setController(controller);
-        logInController.setStage(primaryStage);
     }
 
     void handleSearch(){
@@ -146,5 +127,15 @@ public class ProfileController implements Initializable,FriendRequestListener {
         List<UserModel> userModelList = this.getTableData().stream().filter(p1.or(p2)).collect(Collectors.toList());
         friendsModels.setAll(userModelList);
         friendsTable.setItems(friendsModels);
+    }
+
+    public void onChatButtonClicked(ActionEvent actionEvent) throws IOException {
+        FXMLLoader chatWindowLoader = new FXMLLoader(SocialNetworkApplication.class.getResource("chat-view.fxml"));
+        Scene chatScene = new Scene(chatWindowLoader.load());
+        primaryStage.setTitle("Add Friend");
+        primaryStage.setScene(chatScene);
+        ChatController chatController = chatWindowLoader.getController();
+        chatController.setController(controller);
+        chatController.setStage(primaryStage);
     }
 }

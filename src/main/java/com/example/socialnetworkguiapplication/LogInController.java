@@ -47,16 +47,16 @@ public class LogInController implements Initializable {
             String email=emailTextField.getText();
             SocialNetworkApplication.getController().setLoggedEmail(email);
             SocialNetworkApplication.getController().setLoggedPassword(passwordTextField.getText());
-            FXMLLoader profileWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("profile-view.fxml"));
-            Scene friendsScene=new Scene(profileWindowLoader.load());
-            friendsScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            FXMLLoader profileWindowLoader=new FXMLLoader(SocialNetworkApplication.class.getResource("main-profile-view.fxml"));
+            Scene profileScene=new Scene(profileWindowLoader.load());
+            profileScene.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     xOffset = event.getSceneX();
                     yOffset = event.getSceneY();
                 }
             });
-            friendsScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            profileScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     primaryStage.setX(event.getScreenX() - xOffset);
@@ -64,7 +64,7 @@ public class LogInController implements Initializable {
                 }
             });
             primaryStage.setTitle("FriendZone");
-            primaryStage.setScene(friendsScene);
+            primaryStage.setScene(profileScene);
             ProfileController profileController = profileWindowLoader.getController();
             profileController.setController(controller);
             profileController.setStage(primaryStage);
@@ -84,6 +84,5 @@ public class LogInController implements Initializable {
         registerController.setController(controller);
         registerController.setStage(primaryStage);
         primaryStage.show();
-
     }
 }
