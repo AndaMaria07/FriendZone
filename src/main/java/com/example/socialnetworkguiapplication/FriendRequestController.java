@@ -4,6 +4,7 @@ import domain.Friendship;
 import domain.Tuple;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -57,5 +58,14 @@ public class FriendRequestController implements Initializable {
 
     public void addListener(FriendRequestListener listener) {
         listeners.add(listener);
+    }
+
+    public void onFriendRequestsButtonClick(ActionEvent actionEvent) {
+    }
+
+    public void onAddFriendButtonClicked(ActionEvent actionEvent) {
+    }
+
+    public void onlogOutButtonClicked(ActionEvent actionEvent) {
     }
 }

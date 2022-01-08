@@ -1,34 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="552.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.AddFriendController">
+<AnchorPane prefHeight="519.0" prefWidth="755.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.socialnetworkguiapplication.AddFriendController">
    <children>
-      <Button layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#onBackButtonClick" text="Back">
+      <Button layoutX="28.0" layoutY="32.0" mnemonicParsing="false" onAction="#onBackButtonClick" prefHeight="38.0" prefWidth="57.0" text="Back">
          <font>
             <Font name="Corbel" size="17.0" />
          </font></Button>
-      <TableView fx:id="usersTable" layoutX="11.0" layoutY="81.0" prefHeight="386.0" prefWidth="710.0">
+      <TableView fx:id="usersTable" layoutX="22.0" layoutY="152.0" prefHeight="341.0" prefWidth="710.0">
          <columns>
             <TableColumn fx:id="userEmailColumn" minWidth="20.0" prefWidth="219.20001792907715" text="Email" />
             <TableColumn fx:id="userFirstNameColumn" prefWidth="275.199951171875" text="Firstname" />
             <TableColumn fx:id="userLastNameColumn" prefWidth="215.20004272460938" text="Lastname" />
          </columns>
       </TableView>
-      <Button fx:id="sendRequestButton" layoutX="441.0" layoutY="22.0" mnemonicParsing="false" onAction="#onSendRequestButtonClick" prefHeight="38.0" prefWidth="118.0" text="Send request">
+      <Button fx:id="sendRequestButton" layoutX="378.0" layoutY="90.0" mnemonicParsing="false" onAction="#onSendRequestButtonClick" prefHeight="38.0" prefWidth="142.0" text="Send request">
          <font>
             <Font name="Corbel" size="17.0" />
          </font></Button>
-      <TextField fx:id="searchBar" layoutX="162.0" layoutY="22.0" opacity="0.27" prefHeight="38.0" prefWidth="275.0" />
-      <Button fx:id="unsendRequestButton" layoutX="578.0" layoutY="22.0" mnemonicParsing="false" onAction="#onUnsendRequestButtonClick" prefHeight="38.0" prefWidth="142.0" text="Unsend Request">
+      <TextField fx:id="searchBar" layoutX="57.0" layoutY="90.0" opacity="0.27" prefHeight="38.0" prefWidth="275.0" />
+      <Button fx:id="unsendRequestButton" layoutX="572.0" layoutY="90.0" mnemonicParsing="false" onAction="#onUnsendRequestButtonClick" prefHeight="38.0" prefWidth="142.0" text="Unsend Request">
          <font>
             <Font name="Corbel" size="17.0" />
          </font>
       </Button>
+      <Label layoutX="132.0" layoutY="39.0" text="Expand your Frienzone by choosing a user and sending him a request.">
+         <font>
+            <Font name="Corbel Light" size="19.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
